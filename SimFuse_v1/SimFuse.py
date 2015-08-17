@@ -30,7 +30,7 @@ Usage: python SimFuse.py
 
 -o working/output directory [all folders should have / at the end]                                                  *[No default value]
 
--c bam filter script to get background reads with no potential fusion reads (only properly paired reads)            *[No default value]
+-c bam filter script to get background reads with no potential fusion reads (only properly paired reads)            [default value is clear_bg_filter in the SF folder]
 
 -e The txt file with all exon annotations for a genome, can be generated from biomart		                    *[No default value]
 
@@ -119,8 +119,7 @@ if __name__ == "__main__":
 	work_folder=None
 	bam_name=None
         LOG_F=None
-        clear_bg_filter=None
-	script_path=None
+        script_path=None
         exon_txt=None
         genome_fa=None
         read_matrix_list=None
@@ -135,6 +134,7 @@ if __name__ == "__main__":
 	frag_std="50"
 	exclud_len="30"
 	times=100
+	clear_bg_filter=None
 	
 	
 	###get arguments(parameters)
@@ -192,9 +192,8 @@ if __name__ == "__main__":
             log_error.write("bam_name is not provided\n"); sys.exit(1)
                 
         if clear_bg_filter==None:
-            print "clear_bg_filter is not provided"
-            log_error.write("clear_bg_filter is not provided\n"); sys.exit(1)
-        
+            clear_bg_filter=script_path+"/clear_bg_filter"
+	    
         if exon_txt==None:
             print "exon_txt is not provided"
             log_error.write("exon_txt is not provided\n"); sys.exit(1)
