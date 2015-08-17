@@ -1,0 +1,8 @@
+samtools
+bedtools
+bamtools
+python
+boost<=1.51
+r
+pysam
+bam2fastq

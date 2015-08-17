@@ -1,0 +1,14 @@
+{
+"filters" : [
+{ "id" : "isproperpair",
+"isProperPair" : "true"
+},
+{ "id" : "highMapQuality",
+"mapQuality" : ">=10"
+},
+{ "id" : "skipregion",
+"cigar" : "*N*"
+}
+],
+"rule" : " !skipregion & (isproperpair & highMapQuality) "
+}
