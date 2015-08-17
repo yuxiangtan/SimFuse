@@ -179,10 +179,6 @@ if __name__ == "__main__":
 	log_bam_fq=open(LOG_BAM_FQ,"a")
        
         #for parameter input needed.
-        if bam_folder==None:
-            print "bam_folder is not provided"
-            log_error.write("bam_folder is not provided\n"); sys.exit(1)
-        
         if work_folder==None:
             print "work_folder is not provided"
             log_error.write("work_folder is not provided\n"); sys.exit(1)
