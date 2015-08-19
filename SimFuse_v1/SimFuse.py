@@ -24,21 +24,22 @@ This script will finally generate an branch of simulated reads with/out merging 
 Usage: python SimFuse.py
 -h help
 
--i file contains a number each row, which will be used to generate split/span read follow read length distribution  *[No default value]
+-i The read group file, which contains a desired split read number each row, complementary span read number will
+    be calculated following read length distribution								    *[No default value]
 
--b Targeted bam file location									                    *[No default value]
+-b Targeted bam file location, from which the fusion background will be generated		                    *[No default value]
 
 -o working/output directory [all folders should have / at the end]                                                  *[No default value]
 
--c bam filter script to get background reads with no potential fusion reads (only properly paired reads)            [default value is clear_bg_filter in the SF folder]
+-c bam filter script to get background reads with no potential fusion reads (only properly paired aligned reads)    [default value is clear_bg_filter in the SF folder]
 
 -e The txt file with all exon annotations for a genome, can be generated from biomart		                    *[No default value]
 
 -G tophat_genome_reference_fa - the path of the genome fa file (such as hg19.fa)                                    *[No default value]
 
--g LOG_folder                                                                                                       *[No default value]
+-g LOG_folder, generally set to be within the working directory                                                     *[No default value]
 
--F simulator path                                                                                                   *[No default value]
+-F simulator script path                                                                                            *[No default value]
 
 -l Read_length - length of reads		                                                                    [default value 99]
 
@@ -48,13 +49,13 @@ Usage: python SimFuse.py
 
 -d minimum number of exons for each expression group to sample from 		                                    [default value is 100*100(from -p)]
 
--m number of mutation allowed in each read (this is a in progress function                                          [default value is 0]
+-m number of mutation allowed in each read (this is a in progress function but not supported yet)                   [default value is 0]
 
 -M fragment size from library preparation                                                                           [default value is 0]
 
 -s standard deviation of fragment size                                                                              [default value is 0]
 
--E the length on each end of read you want to exclude when doing the simulation					    [default value is 30 because blat will no align read <=30]
+-E the length on each end of read you want to exclude when doing the simulation					    [default value is 30 because default blat will not align read shorter than 30bp]
 
 -t number of simulation rounds 											    [default value is 100]
 ============================
@@ -284,7 +285,7 @@ if __name__ == "__main__":
 	step_name="Get fastq from bam, in fusion_simulator.py"
         print "===================="
         print step_name
-        next_step_name="Generate different simulation supporting reads (3,5,10)^2 and merge with bg, in fusion_simulator.py"
+        next_step_name="Generate different simulation supporting reads and merge with bg, in fusion_simulator.py"
 	get_fastq_cmd="bam2fastq "+work_folder+"proper_pair_no_skip.bam --force -o "+work_folder+"proper_pair_no_skip#.fq"
 	resume_stat_loc=resume_func(get_fastq_cmd, 1, step_name, next_step_name, LOG_OUT)
         print "finished getting fastq from bam"
@@ -325,7 +326,7 @@ if __name__ == "__main__":
 		read_rate=0.05
 	    
 	    #for loop to submit multiple groups.
-	    step_name="Generate different simulation supporting reads (3,5,10)^2 and merge with bg, in fusion_simulator.py, round "+str(round_time)
+	    step_name="Generate different simulation supporting reads and merge with bg, in fusion_simulator.py, round "+str(round_time)
 	    print "===================="
 	    print step_name
 	    next_step_name="This is the last step in this script"
