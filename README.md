@@ -71,8 +71,8 @@
 
 
 ###In each simulation round, each split/span combination will have 14 files. Within them the two .fq files are the key files containing all simulated reads.
-<li>coverage_on_exons.txt_#split_#span_ref.fq1 and coverage_on_exons.txt_#split_#span_ref.fq2: are the key outputs from SimFuse, which contains all the simulated reads. They are used to merge with back groun fq files (proper_pair_no_skip_1.fq and proper_pair_no_skip_2.fq) to generate simulated data. However, because the merged file is generally huge and causes space issues. </li>
-<li>	As a result, users need to merge them by: cat "coverage_on_exons.txt"$ID"_ref.fq1" $no_skip_bg_path"/proper_pair_no_skip_1.fq" > "coverage_on_exons.txt"$ID"_ref_merged_def.1.fastq" before running fusion detectors and then remove the merged files.</li>
+<li>coverage_on_exons.txt_#split_#span_ref.fq1 and coverage_on_exons.txt_#split_#span_ref.fq2: are the key outputs from SimFuse, which contains all the simulated reads. They are used to merge with background fq files (proper_pair_no_skip_1.fq and proper_pair_no_skip_2.fq) to generate simulated data. However, because the merged file is generally huge and causes space issues. As a result, users need to merge them by: cat "coverage_on_exons.txt"$ID"_ref.fq1" $no_skip_bg_path"/proper_pair_no_skip_1.fq" > "coverage_on_exons.txt"$ID"_ref_merged_def.1.fastq" before running fusion detectors and then remove the merged files.</li>
+###Other supplementary files that users may want to know.
 <li>coverage_on_exons.txt_#split_#span.bed: contains the exons randomly picked for simulation</li>
 <li>coverage_on_exons.txt_#split_#span.expression_groups: shows under the input of -d, how many expression groups there are and the number of exons in each group. The header of this file is max_expression_level, group_ID, number_of_exons.</li>
 <li>coverage_on_exons.txt_#split_#span.row_matrix_left and coverage_on_exons.txt_#split_#span.row_matrix_right: are just the row number of the picked exons</li>
