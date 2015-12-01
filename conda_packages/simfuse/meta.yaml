@@ -1,0 +1,33 @@
+package:
+  name: simfuse
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '0.0.0') }}
+source:
+  # or from git:
+  git_url: https://github.com/yuxiangtan/SimFuse.git
+  # once we have a release, uncomment next line and change it to match
+  # release tag name
+  #git_tag: v1
+
+build:
+
+  number: 0       # (defaults to 0)
+
+requirements:
+
+  run:
+   - samtools
+   - bedtools
+   - bamtools
+   - python
+   - boost<=1.51
+   - r
+   - pysam
+   - bam2fastq
+
+test:
+  commands:
+    - SimFuse -h
+
+about:
+  home: https://github.com/yuxiangtan/SimFuse
+  license: Apache Version 2.0
