@@ -19,7 +19,7 @@ requirements:
    - bedtools
    - bamtools
    - python
-   - boost<=1.51
+   - boost <=1.51
    - r
    - pysam
    - bam2fastq
