@@ -20,23 +20,23 @@
 
 
 ##Reference Dataset (available in: http://smonti.bumc.bu.edu/~montilab/zoho/SimFuse/reference_files/)
-<li>1.	Genome.fa. For bowtie website. [Note: the fa file must use "chr*" as chromosome rather than use just 1-22, X, Y and M.] The hg19.fa I used can be also downloaded in the reference folder. (You need to build bowtie index yourself based on the fa by using "bowtie2-build".)</li>
+<li>1.	Genome.fa. For bowtie website. [Note: the fa file must use "chr*" as chromosome rather than use just 1-22, X, Y and M.] The hg19.fa I used can be also downloaded in the reference folder. </li>
 <li>2.	Exon annotation. They can be built in bio-mart. Columns to include and following this order. For example, the one for hg19 (HG.GRCh37.64.exons.txt in the reference folder). </li>
 
 
 
-##Input data format</li>
+##Input Data Format</li>
 <li>SimFuse now takes only paired end aligned bam file from aligners as input. To convert sam to bam, samtools command "samtools view" can be used. Other processing steps (i.e. PCR duplicate filtering, non-unique alignment filtering) are not required.</li>
 
 
 
-##How to run
+##How to Run
 <li>Before running SimFuse, you need to activate the SimFuse environment by:</li>
 <li> source activate $env_name #(The one used in the setup step) </li>
 <li>Running SimFuse is as simple as running a single command line by just typing "SimFuse -i read_group_input -b bam_file -o working_dir -e exon_file -F SimFuse_path -G genome_ref -g log_file". </li>
 <li>[Details of all parameters: please see the help information in each SimFuse version for latest updates.]</li>
 <li>*Note: the output directory should be different from the directory containing the input bam file.*</li>
-<li>??????add the summary function related info.......</li>
+<li>Scripts for summarization and comparison on results of fusion detection algorithms are in the SimFuse_summary_scripts folder. However,because different fusion detection algorithms have their own output format, there is no uniform adaptor to do this yet. SimFuse only supports format conversion for deFuse, TophatFusion and QueryFuse output. This section needs further improvement on building an automatic wrapper.</li>
 
 ##Parameters
 ###The ones with no default values are required parameters, while the ones with default values are optional.
@@ -61,7 +61,7 @@
 <li>-t number of simulation rounds 											[default value is 100]</li>
 
 ##Output
-###Final output stucture
+###Final Output Stucture
 <li>For each simulation round, a folder with the round number will generated under the working directory.</li>
 <li>A "logs" folder is generated to record the simulation running log on both overview level and run-specific level (in folders with round number).</li>
 <li>coverage_on_exons.txt shows the coverage of each exon in the input sample.</li>
@@ -82,23 +82,10 @@
 <li>coverage_on_exons.txt_#split_#span_ref.bed: bed file containing the reference sequence of each exon, from which fusion supporting reads are generated from.</li>
 <li>coverage_on_exons.txt_#split_#span_ref.fa1 and coverage_on_exons.txt_#split_#span_ref.fa2: are the simulated reads in fa format.</li>
 <li>coverage_on_exons.txt_100_26_ref_bp.txt: shows the breakpoint locations of each pair of fusion partners.</li>
-<li></li>
-
-###Evidence 
-<li>SPLIT_NUM: number of splitting reads supporting this fusion event. If it is fusion event with multiple alignments, the sum of all splitting reads is divided by the number of multiple locations.</li>
-<li>SPAN_NUM: number of spanning reads supporting this fusion event.</li>
-<li>SUPPORT_SUM_NUM: Total supporting read number of this fusion event. It is the sum of SPLIT_NUM and SPAN_NUM.</li>
-<li>SPLIT_PVAL: the value to indicate how well the splitting reads spread around the breakpoint. (The bigger, the better.) It is the p-value from the KS-test.</li>
-<li>SHIFT_RANGE: the length of shared sequence at the breakpoints of the pair of partners. Shifting the breakpoint in this region will not affect the fusion sequence. Biologically, this is locations that an enzyme can bind on and the double-strand DNA break or splicing event can happen at.</li>
-<li>DINUCLEOTIDE_ENTROPY: entropy of 16 possible dinucleotides around the breakpoint.</li>
-<li>MULTI-ALIGN_NUM: number of possible alignment locations for this fusion reference.</li>
-<li>RANK_SCORE: The sum of ranks of all previous features.</li>
 
 
-###Annotation
-<li>CHR_PARTNER_GENE: the chromosome of the partner gene.</li>
-<li>BREAKPOINT_PARTNER_GENE: the breakpoint location of the partner gene.</li>
-<li>DIRECTION_PARTNER_GENE: the chromosomal connection direction of the partner gene. ("F" means forward direction, which means it is 3' end on plus strand or 5' end on the minus strand and the detected arm is on the left (side with smaller location number than the breakpoint) of a chromosome. "R" means reverse direction, which means it is 5' end on the plus strand or 3' end on the minus strand and the detected arm is on the right (side with bigger location number than the breakpoint) of a chromosome.</li>
-<li>CHR_QUERY_GENE: the chromosome of the query gene</li>
-<li>BREAKPOINT_QUERY_GENE: the breakpoint location of the query gene.</li>
-<li>DIRECTION_QUERY_GENE: the chromosomal connection direction of the query gene.</li>
+###Summary Function 
+<li>By using the provided summary scripts in the SimFuse_summary_scripts folder, statistical summary tables (recall and precision) and complementary barplot figures will be generated.</li>
+<li>In the tables, as shown in the hearder, the first column indicates the split_span combination; the second column is the recall/pricision; the third column is its standard deviation; the fourth column indicates the 95% confidence interval, which is used to generate error bars in the plots.</li>
+
+
