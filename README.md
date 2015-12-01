@@ -26,30 +26,67 @@
 
 
 ##Input data format</li>
-<li>SimFuse now takes only paired end aligned bam file from aligners as input. To convert sam to bam, samtools command "samtools view" can be used.</li>
+<li>SimFuse now takes only paired end aligned bam file from aligners as input. To convert sam to bam, samtools command "samtools view" can be used. Other processing steps (i.e. PCR duplicate filtering, non-unique alignment filtering) are not required.</li>
 
 
 
 ##How to run
 <li>Before running SimFuse, you need to activate the SimFuse environment by:</li>
 <li> source activate $env_name #(The one used in the setup step) </li>
-<li>Running SimFuse is as simple as running a single command line by just typing "SimFuse.py ????????????". </li>
-<li>[Details of all parameters: please see the help information in each SimFuse version.]</li>
+<li>Running SimFuse is as simple as running a single command line by just typing "SimFuse -i read_group_input -b bam_file -o working_dir -e exon_file -F SimFuse_path -G genome_ref -g log_file". </li>
+<li>[Details of all parameters: please see the help information in each SimFuse version for latest updates.]</li>
 <li>*Note: the output directory should be different from the directory containing the input bam file.*</li>
 <li>??????add the summary function related info.......</li>
 
-
-The following section need more works on, should also add the parameter section.
+##Parameters
+###The ones with no default values are required parameters, while the ones with default values are optional.
+<li>-h help
+<li>-i The read group file, which contains a desired split read number each row, complementary span read number will
+       be calculated following read length distribution								        *[No default value, please see read_group_example.txt in the Example_files folder]</li>
+<li>-b Targeted bam file location, from which the fusion background will be generated		                        *[No default value]</li>
+<li>-o working/output directory [all folders should have / at the end]                                                  *[No default value]</li>
+<li>-e The txt file with all exon annotations for a genome, can be generated from biomart		                *[No default value, please see HG.GRCh37.64.exons.txt in the Example_files folder]</li>
+<li>-F simulator script path                                                                                            *[No default value]</li>
+<li>-G tophat_genome_reference_fa - the path of the genome fa file (such as hg19.fa)                                    *[No default value]</li>
+<li>-g LOG_folder, generally set to be within the working directory                                                     *[No default value]</li>
+<li>-c bam filter script to get background reads with no potential fusion reads (only properly paired aligned reads)    [default value is clear_bg_filter in the SF folder]</li>
+<li>-d minimum number of exons for each expression group to sample from 		                                [default value is 100*100(from -p)]</li>
+<li>-E the length on each end of read you want to exclude when doing the simulation					[default value is 30 because default blat will not align read shorter than 30bp]</li>
+<li>-l Read_length - length of reads		                                                                        [default value 99]</li>
+<li>-M fragment size from library preparation                                                                           [default value is 0]</li>
+<li>-m number of mutation allowed in each read (this is a in progress function but not supported yet)                   [default value is 0]</li>
+<li>-p number of simulation gene pairs in each expression group.                                                        [default value is 100]</li>
+<li>-r resume_status: check whether user want to skip finished step or start over                                       [default value 0, not resume]</li>
+<li>-s standard deviation of fragment size                                                                              [default value is 0]</li>
+<li>-t number of simulation rounds 											[default value is 100]</li>
 
 ##Output
-###Final output
-<li>For a specific sample, all the most important outputs are in the "results" folder and each query gene will have its own subfolder. The "whole_fusion_sum_filtered.txt" file is the key one with score and ranked result after filtering. The "whole_fusion_sum_all.txt" file contains all the detect fusions before filtering and has scores of features but no ranks. If you want to have a look at the detail graph of ranked fusion events, you can find it in the "fusion_supporting_graph_final" folder by the fusion details.</li>
-<li>There are three other folders in a run: "logs" folder with all running logs; "bams" folder with shared preprocess files for all queries; "intermedias" folder with query specific intermediate files for each query. </li>
+###Final output stucture
+<li>For each simulation round, a folder with the round number will generated under the working directory.</li>
+<li>A "logs" folder is generated to record the simulation running log on both overview level and run-specific level (in folders with round number).</li>
+<li>coverage_on_exons.txt shows the coverage of each exon in the input sample.</li>
+<li>proper_pair_no_skip files (.bam, _1.fq and _2.fq) are the fusion-cleaned background files in different format.</li>
+<li>stats.txt shows the read number of four different alignment categories of the input bam file.</li>
 
 
-###Identification
-<li>PARTNER_GENE_NAME: the name of the partner gene, which can be ambiguous.</li>
-<li>PARTNER_GENE_ID: the ENSEMBL ID of the partner gene, which is unique.</li>
+
+###In each simulation round, each split/span combination will have 14 files. Within them the two .fq files are the key files containing all simulated reads.
+<li>coverage_on_exons.txt_#split_#span.bed: contains the exons randomly picked for simulation</li>
+<li>coverage_on_exons.txt_#split_#span.expression_groups: shows under the input of -d, how many expression groups there are and the number of exons in each group. The header of this file is max_expression_level, group_ID, number_of_exons.</li>
+<li>coverage_on_exons.txt_#split_#span.row_matrix_left and coverage_on_exons.txt_#split_#span.row_matrix_right: are just the row number of the picked exons</li>
+<li>coverage_on_exons.txt_#split_#span_exon_pairs.bed: shows how the exons are paired for fusion simulation</li>
+<li>coverage_on_exons.txt_#split_#span_queryID_list.txt: shows what genes can be used as query genes and with the set number of fusion partners in the simulation</li>
+<li>coverage_on_exons.txt_#split_#span_queryID_partner_count.txt: shows the number of fusion partner for each query gene</li>
+<li>coverage_on_exons.txt_#split_#span_ref.bed: bed file containing the reference sequence of each exon, from which fusion supporting reads are generated from.</li>
+<li>coverage_on_exons.txt_#split_#span_ref.fa1 and coverage_on_exons.txt_#split_#span_ref.fa2: are the simulated reads in fa format.</li>
+<li>coverage_on_exons.txt_#split_#span_ref.fq1 and coverage_on_exons.txt_#split_#span_ref.fq2: are the key outputs from SimFuse, which contains all the simulated reads. They are used to merge with back groun fq files (proper_pair_no_skip_1.fq and proper_pair_no_skip_2.fq) to generate simulated data. However, because the merged file is generally huge and causes space issues. Users need to merge them by "cat </li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
 <li>QUERY_GENE_NAME: the name of the query gene.</li>
 <li>QUERY_GENE_ID: the ENSEMBL ID of the query gene.</li>
 
