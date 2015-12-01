@@ -19,9 +19,9 @@
 
 
 
-##Reference Dataset (available in: http://smonti.bumc.bu.edu/~montilab/zoho/QueryFuse/reference_files/) need to work on this section
-<li>1.	Genome.fa and build the bowtie index. For bowtie website. [Note: the fa file must use "chr*" as chromosome rather than use just 1-22, X, Y and M.] The hg19.fa I used can be also downloaded in the reference folder. (You need to build bowtie index yourself based on the fa by using "bowtie2-build".)</li>
-<li>2.	Gene annotation. They can be built in bio-mart. Columns to include and following this order. For example, the one for hg19 (hg19_whole_gene_list.bed in the reference folder). In order to have better extension, I generated a 5k bp extended version on both sides of each gene. (hg19_whole_gene_list_5k_expanded.bed in the reference folder). Because the chrM is shortly, need to pay attention that not to extent the boundary over chrM's length. However, generally, chrM is not considered in fusion detection and should be filtered out.)</li>
+##Reference Dataset (available in: http://smonti.bumc.bu.edu/~montilab/zoho/SimFuse/reference_files/)
+<li>1.	Genome.fa. For bowtie website. [Note: the fa file must use "chr*" as chromosome rather than use just 1-22, X, Y and M.] The hg19.fa I used can be also downloaded in the reference folder. (You need to build bowtie index yourself based on the fa by using "bowtie2-build".)</li>
+<li>2.	Exon annotation. They can be built in bio-mart. Columns to include and following this order. For example, the one for hg19 (HG.GRCh37.64.exons.txt in the reference folder). </li>
 
 
 
@@ -45,9 +45,9 @@
        be calculated following read length distribution								        *[No default value, please see read_group_example.txt in the Example_files folder]</li>
 <li>-b Targeted bam file location, from which the fusion background will be generated		                        *[No default value]</li>
 <li>-o working/output directory [all folders should have / at the end]                                                  *[No default value]</li>
-<li>-e The txt file with all exon annotations for a genome, can be generated from biomart		                *[No default value, please see HG.GRCh37.64.exons.txt in the Example_files folder]</li>
+<li>-e The txt file with all exon annotations for a genome, can be generated from biomart		                *[No default value, please see Reference Dataset 2 HG.GRCh37.64.exons.txt in the Example_files folder]</li>
 <li>-F simulator script path                                                                                            *[No default value]</li>
-<li>-G tophat_genome_reference_fa - the path of the genome fa file (such as hg19.fa)                                    *[No default value]</li>
+<li>-G tophat_genome_reference_fa - the path of the genome fa file (such as hg19.fa)                                    *[No default value, please see Reference Dataset 1.]</li>
 <li>-g LOG_folder, generally set to be within the working directory                                                     *[No default value]</li>
 <li>-c bam filter script to get background reads with no potential fusion reads (only properly paired aligned reads)    [default value is clear_bg_filter in the SF folder]</li>
 <li>-d minimum number of exons for each expression group to sample from 		                                [default value is 100*100(from -p)]</li>
@@ -71,6 +71,8 @@
 
 
 ###In each simulation round, each split/span combination will have 14 files. Within them the two .fq files are the key files containing all simulated reads.
+<li>coverage_on_exons.txt_#split_#span_ref.fq1 and coverage_on_exons.txt_#split_#span_ref.fq2: are the key outputs from SimFuse, which contains all the simulated reads. They are used to merge with back groun fq files (proper_pair_no_skip_1.fq and proper_pair_no_skip_2.fq) to generate simulated data. However, because the merged file is generally huge and causes space issues. </li>
+<li>	As a result, users need to merge them by: cat "coverage_on_exons.txt"$ID"_ref.fq1" $no_skip_bg_path"/proper_pair_no_skip_1.fq" > "coverage_on_exons.txt"$ID"_ref_merged_def.1.fastq" before running fusion detectors and then remove the merged files.</li>
 <li>coverage_on_exons.txt_#split_#span.bed: contains the exons randomly picked for simulation</li>
 <li>coverage_on_exons.txt_#split_#span.expression_groups: shows under the input of -d, how many expression groups there are and the number of exons in each group. The header of this file is max_expression_level, group_ID, number_of_exons.</li>
 <li>coverage_on_exons.txt_#split_#span.row_matrix_left and coverage_on_exons.txt_#split_#span.row_matrix_right: are just the row number of the picked exons</li>
@@ -79,16 +81,8 @@
 <li>coverage_on_exons.txt_#split_#span_queryID_partner_count.txt: shows the number of fusion partner for each query gene</li>
 <li>coverage_on_exons.txt_#split_#span_ref.bed: bed file containing the reference sequence of each exon, from which fusion supporting reads are generated from.</li>
 <li>coverage_on_exons.txt_#split_#span_ref.fa1 and coverage_on_exons.txt_#split_#span_ref.fa2: are the simulated reads in fa format.</li>
-<li>coverage_on_exons.txt_#split_#span_ref.fq1 and coverage_on_exons.txt_#split_#span_ref.fq2: are the key outputs from SimFuse, which contains all the simulated reads. They are used to merge with back groun fq files (proper_pair_no_skip_1.fq and proper_pair_no_skip_2.fq) to generate simulated data. However, because the merged file is generally huge and causes space issues. Users need to merge them by "cat </li>
+<li>coverage_on_exons.txt_100_26_ref_bp.txt: shows the breakpoint locations of each pair of fusion partners.</li>
 <li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li>QUERY_GENE_NAME: the name of the query gene.</li>
-<li>QUERY_GENE_ID: the ENSEMBL ID of the query gene.</li>
 
 ###Evidence 
 <li>SPLIT_NUM: number of splitting reads supporting this fusion event. If it is fusion event with multiple alignments, the sum of all splitting reads is divided by the number of multiple locations.</li>
