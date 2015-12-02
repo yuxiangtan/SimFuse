@@ -85,7 +85,7 @@
 
 
 ###Summary Function 
-<li>By using the provided summary scripts in the SimFuse_summary_scripts folder, statistical summary tables (recall and precision) and complementary barplot figures will be generated.</li>
-<li>In the tables, as shown in the hearder, the first column indicates the split_span combination; the second column is the recall/pricision; the third column is its standard deviation; the fourth column indicates the 95% confidence interval, which is used to generate error bars in the plots.</li>
+<li>By using the provided summary scripts in the SimFuse_summary_scripts folder, statistical summary tables (recall and precision) and complementary barplot figures (see 3method_detected_fusion_recall.png and 3method_detected_fusion_precision.png in Example_files) will be generated.</li>
+<li>In the tables (see QF_summary_detected_fusion_recall.txt and QF_summary_detected_fusion_precision.txt in Example_files), as shown in the hearder, the first column indicates the split_span combination; the second column is the recall/pricision; the third column is its standard deviation; the fourth column indicates the 95% confidence interval, which is used to generate error bars in the plots.</li>
 
 
