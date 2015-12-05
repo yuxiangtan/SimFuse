@@ -46,7 +46,7 @@
 <li>-b Targeted bam file location, from which the fusion background will be generated		                        *[No default value]</li>
 <li>-o working/output directory [all folders should have / at the end]                                                  *[No default value]</li>
 <li>-e The txt file with all exon annotations for a genome, can be generated from biomart		                *[No default value, please see Reference Dataset 2 HG.GRCh37.64.exons.txt in the Example_files folder]</li>
-<li>-F simulator script path                                                                                            *[No default value]</li>
+<li>-F simulator script path (generally, it is ~/anaconda_envs/$env_name/lib/SimFuse/                                   *[No default value]</li>
 <li>-G tophat_genome_reference_fa - the path of the genome fa file (such as hg19.fa)                                    *[No default value, please see Reference Dataset 1.]</li>
 <li>-g LOG_folder, generally set to be within the working directory                                                     *[No default value]</li>
 <li>-c bam filter script to get background reads with no potential fusion reads (only properly paired aligned reads)    [default value is clear_bg_filter in the SF folder]</li>
