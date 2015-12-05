@@ -19,7 +19,7 @@
 
 
 
-##Reference Dataset (available in: http://smonti.bumc.bu.edu/~montilab/zoho/SimFuse/reference_files/)
+##Reference Dataset (available at: ...)
 <li>1.	Genome.fa. For bowtie website. [Note: the fa file must use "chr*" as chromosome rather than use just 1-22, X, Y and M.] The hg19.fa I used can be also downloaded in the reference folder. </li>
 <li>2.	Exon annotation. They can be built in bio-mart. Columns to include and following this order. For example, the one for hg19 (HG.GRCh37.64.exons.txt in the reference folder). </li>
 
