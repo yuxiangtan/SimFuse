@@ -3,6 +3,7 @@
 
 
 ##Publications
+<li>Tan, Y., Tambouret, Y., & Monti, S. (2015). SimFuse: A Novel Fusion Simulator for RNA Sequencing (RNA-Seq) Data. BioMed Research International. 2015:780519. doi: 10.1155/2015/780519. Epub 2015 Dec 29.</li>
 
 
 ##RNA-Seq Datasets
